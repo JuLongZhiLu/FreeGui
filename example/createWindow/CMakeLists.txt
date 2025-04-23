@@ -12,4 +12,4 @@ add_executable(creareWindow
     ../../src/widgets/window.cpp
 )
 
-target_include_directories(creareWindow PUBLIC "../../include/FreeGUI")
+target_include_directories(creareWindow PUBLIC "../../include")

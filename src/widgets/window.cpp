@@ -1,5 +1,6 @@
-#include "widgets/window.hpp"
-#include "core/object.hpp"
+#include "FreeGui/widgets/window.hpp"
+#include "FreeGui/core/object.hpp"
+#include "FreeGui/widgets/widget.hpp"
 
 #ifdef FREEGUI_PLATFORM_WINDOWS
 #include <Windows.h>
@@ -30,7 +31,7 @@ Window::createNativeWindow()
   WNDCLASSEX wc = { 0 };
   wc.cbSize = sizeof(WNDCLASSEX);
   wc.style = CS_HREDRAW | CS_VREDRAW;
-  wc.lpfnWndProc = DefWindowProc;
+  wc.lpfnWndProc = WindowProc; // 修改这里
   wc.hInstance = hInstance;
   wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
   wc.lpszClassName = "FreeGuiWindowClass";
@@ -53,6 +54,8 @@ Window::createNativeWindow()
   if (nativeHandle_) {
     ShowWindow((HWND)nativeHandle_, SW_SHOW);
     UpdateWindow((HWND)nativeHandle_);
+    // 设置窗口用户数据
+    SetWindowLongPtr((HWND)nativeHandle_, GWLP_USERDATA, (LONG_PTR)this);
   }
 #elif defined(FREEGUI_PLATFORM_LINUX)
   // Linux平台窗口创建
@@ -157,4 +160,38 @@ Window::setTitle(const std::string& title)
 #endif
 }
 
-} // namespace FreeGui
+#ifdef FREEGUI_PLATFORM_WINDOWS
+LRESULT CALLBACK
+Window::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+  Window* window =
+    reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+  if (window) {
+    switch (msg) {
+      case WM_SIZE:
+        window->resized.emit(LOWORD(lParam), HIWORD(lParam));
+        break;
+      case WM_CLOSE:
+        window->closed.emit();
+        break;
+        // 其他事件处理...
+    }
+  }
+  return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+#endif
+
+void
+Window::processPlatformEvents()
+{
+#ifdef FREEGUI_PLATFORM_WINDOWS
+  MSG msg;
+  while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+    TranslateMessage(&msg);
+    DispatchMessage(&msg);
+  }
+#endif
+}
+
+}
