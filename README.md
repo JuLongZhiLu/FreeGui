@@ -6,7 +6,8 @@ I just want to write a completely free, cross-platform C++ GUI library.
 **Warning**: For the foreseeable future, this library will be ​​rough and unstable​​.
 
 # Version
-0.0.1
+0.0.2
 
 # Features
 - Create window
+- Window class added two slots and one process event function
