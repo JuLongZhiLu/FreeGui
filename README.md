@@ -11,4 +11,4 @@ I just want to write a completely free, cross-platform C++ GUI library.
 # Features
 - Create window
 - Window class added two slots and one process event function
-- Create button and Button class added "click" slot
+- Create button and Button class added "click" signal
