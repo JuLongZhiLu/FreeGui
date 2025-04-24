@@ -9,6 +9,7 @@ Button::Button(const std::string& label, HWND parentHandle)
 #ifdef FREEGUI_PLATFORM_WINDOWS
   HINSTANCE hInstance = GetModuleHandle(nullptr);
 
+  static int buttonId = 100; // 确保每个按钮有唯一的ID
   HWND hwnd =
     CreateWindow("BUTTON",
                  label.c_str(),
@@ -18,7 +19,7 @@ Button::Button(const std::string& label, HWND parentHandle)
                  100,
                  30,
                  parentHandle,
-                 nullptr,
+                 (HMENU)buttonId++,
                  hInstance,
                  nullptr);
 

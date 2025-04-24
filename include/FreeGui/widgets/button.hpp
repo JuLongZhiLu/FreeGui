@@ -38,11 +38,11 @@ public:
                               WPARAM wParam,
                               LPARAM lParam);
 
-protected:
+public:
   virtual void handleClickEvent() { clicked.emit(); }
+  void* nativeHandle_ = nullptr;
 
 private:
-  void* nativeHandle_ = nullptr;
   std::string label_;
 };
 

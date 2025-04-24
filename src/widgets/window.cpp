@@ -1,6 +1,8 @@
 #include "FreeGui/widgets/window.hpp"
 #include "FreeGui/core/object.hpp"
+#include "FreeGui/widgets/button.hpp"
 #include "FreeGui/widgets/widget.hpp"
+
 
 #ifdef FREEGUI_PLATFORM_WINDOWS
 #include <Windows.h>
@@ -175,7 +177,18 @@ Window::WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
       case WM_CLOSE:
         window->closed.emit();
         break;
-        // 其他事件处理...
+      case WM_COMMAND:
+        if (HIWORD(wParam) == BN_CLICKED) {
+          HWND buttonHandle = (HWND)lParam;
+          for (auto* widget : window->children_) {
+            if (auto* button = dynamic_cast<Button*>(widget)) {
+              if (button->nativeHandle_ == buttonHandle) {
+                button->handleClickEvent();
+              }
+            }
+          }
+        }
+        break;
     }
   }
   return DefWindowProc(hwnd, msg, wParam, lParam);
