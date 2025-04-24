@@ -22,7 +22,8 @@ add_library(FreeGui
     src/core/object.cpp
     src/core/signal_slot.cpp
     src/widgets/widget.cpp
-    src/widgets/window.cpp # 新增
+    src/widgets/window.cpp
+    src/widgets/button.cpp
 )
 
 # 包含目录

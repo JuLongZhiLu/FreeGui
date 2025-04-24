@@ -194,4 +194,17 @@ Window::processPlatformEvents()
 #endif
 }
 
+void
+Window::addChild(Widget* widget)
+{
+  children_.push_back(widget);
+}
+
+void
+Window::removeChild(Widget* widget)
+{
+  children_.erase(std::remove(children_.begin(), children_.end(), widget),
+                  children_.end());
+}
+
 }

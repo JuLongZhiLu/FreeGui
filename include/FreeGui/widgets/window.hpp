@@ -37,6 +37,7 @@ public:
                                      LPARAM lParam);
 #endif
   void processPlatformEvents();
+  void* getNativeHandle() { return nativeHandle_; };
 
 protected:
   virtual void handleCloseEvent() { closed.emit(); }
@@ -50,6 +51,11 @@ protected:
 private:
   void* nativeHandle_ = nullptr; // 平台相关的窗口句柄
   std::string title_;
+  std::vector<Widget*> children_; // 子控件列表
+
+public:
+  void addChild(Widget* widget);
+  void removeChild(Widget* widget);
 };
 
 } // namespace FreeGui

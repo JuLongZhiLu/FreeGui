@@ -1,3 +1,4 @@
+#include "FreeGui/widgets/button.hpp"
 #include "FreeGui/widgets/window.hpp"
 #include "windows.h"
 #include <iostream>
@@ -6,6 +7,7 @@ int
 main()
 {
   FreeGui::Window window("MyWindow");
+  window.setTitle("Window");
   // 连接信号
   window.resized.connect([](int w, int h) {
     std::cout << "Window resized to: " << w << "x" << h << std::endl;
@@ -17,6 +19,11 @@ main()
     exit(0);
   });
   window.show();
+
+  // 创建按钮
+  FreeGui::Button button("Click Me", (HWND)window.getNativeHandle());
+  button.clicked.connect([]() { std::cout << "Button clicked!" << std::endl; });
+  window.addChild(&button);
 
   // 主循环
   while (true) {

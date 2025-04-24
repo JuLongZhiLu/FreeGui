@@ -10,6 +10,7 @@ add_executable(creareWindow
     ../../src/core/signal_slot.cpp
     ../../src/widgets/widget.cpp
     ../../src/widgets/window.cpp
+    ../../src/widgets/button.cpp
 )
 
 target_include_directories(creareWindow PUBLIC "../../include")
